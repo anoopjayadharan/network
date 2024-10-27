@@ -1,6 +1,10 @@
 provider "aws" {
-    region = "eu-west-1"
+  region = "eu-west-1"
 }
-resource "aws_vpc" "test" {
-  cidr_block = "172.25.0.0/16"
+locals {
+  required_tags = {
+    project     = var.project_name
+    environment = var.environment
+  }
+  tags = merge(var.resource_tags, local.required_tags)
 }
