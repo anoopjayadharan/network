@@ -1,9 +1,20 @@
 # Creates vpc in the eu-west-1 region
 resource "aws_vpc" "vpc_europe" {
   cidr_block = var.cidr
-  tags       = local.tags
+  tags = merge(local.tags,
+    {
+      Name = var.vpc_name
+  })
 }
+# Creates Internet Gateway
+resource "aws_internet_gateway" "igw" {
+  vpc_id = aws_vpc.vpc_europe.id
 
+  tags = merge(local.tags,
+    {
+      Name = var.igw_name
+  })
+}
 # Creates two Public Subnets
 resource "aws_subnet" "public" {
   vpc_id            = aws_vpc.vpc_europe.id
@@ -11,7 +22,10 @@ resource "aws_subnet" "public" {
   availability_zone = var.az[count.index]
   cidr_block        = element(var.public_subnet_cidr, count.index)
 
-  tags = local.tags
+  tags = merge(local.tags,
+    {
+      Name = var.public_subnet_name[count.index]
+  })
 }
 
 # Creates two Private Subnets
@@ -21,16 +35,11 @@ resource "aws_subnet" "private" {
   availability_zone = var.az[count.index]
   cidr_block        = element(var.private_subnet_cidr, count.index)
 
-  tags = local.tags
+  tags = merge(local.tags,
+    {
+      Name = var.private_subnet_name[count.index]
+  })
 }
-
-# Creates Internet Gateway
-resource "aws_internet_gateway" "igw" {
-  vpc_id = aws_vpc.vpc_europe.id
-
-  tags = local.tags
-}
-
 # Creates route tables for public subnets
 resource "aws_route_table" "public_rt" {
   vpc_id = aws_vpc.vpc_europe.id
@@ -41,15 +50,20 @@ resource "aws_route_table" "public_rt" {
     gateway_id = aws_internet_gateway.igw.id
   }
 
-  tags = local.tags
+  tags = merge(local.tags,
+    {
+      Name = var.public_rt_name[count.index]
+  })
 }
-
 # Creates route tables for private subnets
 resource "aws_route_table" "private_rt" {
   vpc_id = aws_vpc.vpc_europe.id
   count  = length(var.az)
 
-  tags = local.tags
+  tags = merge(local.tags,
+    {
+      Name = var.private_rt_name[count.index]
+  })
 }
 
 # Route table association for public subnets
