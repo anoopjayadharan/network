@@ -30,6 +30,19 @@ Here is a diagram of the VPC we want to build:
 
 ![igw](./assets/images/igw.PNG)
 
+## AWS Resource Access Manager
+
+AWS Resource Access Manager (AWS RAM) helps you securely share your resources across AWS accounts, within your organization or organizational units (OUs), and with AWS Identity and Access Management (IAM) roles and users for supported resource types.
+
+**Benefits of AWS RAM**
+- Reduces your operational overhead
+- Provides security and consistency
+- Provides visibility and auditability
+
+### How resource sharing works
+
+![](./assets/images/ram%20-%20diagram.PNG)
+
 ***Resource Access Manager***
 
 ![resource-access-manager](./assets/images/ram.PNG)
@@ -38,7 +51,7 @@ Here is a diagram of the VPC we want to build:
 
 ![shared-resources](./assets/images/shared%20resources.PNG)
 
-Resource sharing has already been enabled at the organisational level.
+Resource sharing has already been enabled at the organisational level. Here, we share it only within an OU.
 
 ***Principal***
 
