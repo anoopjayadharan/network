@@ -1,5 +1,2 @@
 # Terraform Providers
 .terraform
-
-# Output file
-outputs.tf
